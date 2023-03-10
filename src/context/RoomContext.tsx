@@ -1,23 +1,27 @@
 import {
-    createContext,
-    useEffect,
-    useState,
-    useReducer,
-    useContext,
-} from "react";
-import { useNavigate } from "react-router-dom";
-import Peer from "peerjs";
-import { ws } from "../ws";
-import { peersReducer, PeerState } from "../reducers/peerReducer";
-import {
-    addPeerStreamAction,
-    addPeerNameAction,
-    removePeerStreamAction,
-    addAllPeersAction,
-} from "../reducers/peerActions";
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
 
-import { UserContext } from "./UserContext";
-import { IPeer } from "../types/peer";
+import Peer from 'peerjs';
+import { useNavigate } from 'react-router-dom';
+
+import {
+  addAllPeersAction,
+  addPeerNameAction,
+  addPeerStreamAction,
+  removePeerStreamAction,
+} from '../reducers/peerActions';
+import {
+  peersReducer,
+  PeerState,
+} from '../reducers/peerReducer';
+import { IPeer } from '../types/peer';
+import { ws } from '../ws';
+import { UserContext } from './UserContext';
 
 interface RoomValue {
     stream?: MediaStream;
