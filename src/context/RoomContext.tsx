@@ -68,7 +68,7 @@ export const RoomProvider: React.FunctionComponent = ({ children }) => {
 
     const switchStream = (stream: MediaStream) => {
         setScreenSharingId(me?.id || "");
-        Object.values(me?.connections).forEach((connection: any) => {
+        Object.values(me?.connections as Object).forEach((connection: any) => {
             const videoTrack: any = stream
                 ?.getTracks()
                 .find((track) => track.kind === "video");
