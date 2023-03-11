@@ -1,18 +1,24 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./index.css";
-import reportWebVitals from "./reportWebVitals";
-import { RoomProvider } from "./context/RoomContext";
-import { Home } from "./pages/Home";
-import { Room } from "./pages/Room";
-import { UserProvider } from "./context/UserContext";
-import { ChatProvider } from "./context/ChatContext";
+import './index.css';
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import { BrowserRouter } from 'react-router-dom';
+
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+// import { RoomProvider } from "./context/RoomContext";
+// import { Home } from "./pages/Home";
+// import { Room } from "./pages/Room";
+// import { UserProvider } from "./context/UserContext";
+// import { ChatProvider } from "./context/ChatContext";
 
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
-            <UserProvider>
+            <App/>
+            {/* <UserProvider>
                 <RoomProvider>
                     <Routes>
                         <Route path="/" element={<Home />} />
@@ -26,7 +32,7 @@ ReactDOM.render(
                         />
                     </Routes>
                 </RoomProvider>
-            </UserProvider>
+            </UserProvider> */}
         </BrowserRouter>
     </React.StrictMode>,
     document.getElementById("root")
