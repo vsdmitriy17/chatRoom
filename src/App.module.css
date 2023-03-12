@@ -1,16 +1,87 @@
+/* #A35709 - цвет кнопок, бордеров */
+/* #FF8303 - цвет фокуса кнопок, бордеров */
+/* #F0E3CA - цвет текста */
+/* #282830 - цвет фона экрана */
+/* #1B1A17 - цвет секции */
+/* #242320 - цвет полей */
+/* 0px 2px 1px 0px #00000033, 0px 1px 1px 0px #00000024, 0px 1px 3px 0px #0000001F - Тень */
+
+
+
 .container {
-  display: flex;
-  width: 100%;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
   padding-right: 20px;
   padding-left: 20px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  background-color: #282830;
+}
+
+.header {
+  position: fixed;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 2;
+  width: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 22px;
+  box-shadow: 0px 3px 2px 0px #00000033, 0px 2px 2px 0px #00000024, 0px 2px 4px 0px #0000001F;
+  display: flex;
+  background-color:#1B1A17;
+  padding: 10px;
+}
+
+.logo {
+  height: 45px;
+  width: 45px;
+  margin-right: 20px;
+  margin-left: 40px;
 }
 
 .title {
-  color:blue;
-  margin-right:auto;
-  margin-left:auto;
   font-weight: 600;
-  font-size: 28px;
+  font-size: 22px;
+}
+
+.title_uni {
+  color:#F0E3CA;
+}
+
+.title_board {
+  color:#A35709;
+}
+
+.btnBoard {
+  position: fixed;
+  z-index: 2;
+  background-color:#1B1A17;
+  box-shadow: 0px 3px 2px 0px #00000033, 0px 2px 2px 0px #00000024, 0px 2px 4px 0px #0000001F;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 300px;
+  min-height: 100%;
+  padding: 20px;
+  margin-top: 84px;
+  margin-bottom: 20px;
+  top: 0;
+  left: 0;
+}
+
+.button {
+  cursor: pointer;
+  padding:10px;
+  background-color:#A35709;
+  color:#F0E3CA;
+  width: fit-content;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 22px;
+  transition: background-color 250ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.button:hover, .button:focus {
+  background-color:#FF8303;
 }

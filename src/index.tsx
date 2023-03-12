@@ -15,27 +15,12 @@ import reportWebVitals from './reportWebVitals';
 // import { ChatProvider } from "./context/ChatContext";
 
 ReactDOM.render(
-    <React.StrictMode>
-        <BrowserRouter>
-            <App/>
-            {/* <UserProvider>
-                <RoomProvider>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route
-                            path="/room/:id"
-                            element={
-                                <ChatProvider>
-                                    <Room />
-                                </ChatProvider>
-                            }
-                        />
-                    </Routes>
-                </RoomProvider>
-            </UserProvider> */}
-        </BrowserRouter>
-    </React.StrictMode>,
-    document.getElementById("root")
+  <React.StrictMode>
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
