@@ -20,9 +20,16 @@ function App() {
           <span className={styles.title_board}>BOARD</span> 
         </h1>
       </header>
-      <main>
+      <main className={styles.main}>
         <section className={styles.btnBoard}>
-          <button className={styles.button}>Start new meeting</button>
+          <button className={styles.button}>VIDEO CALL</button>
+        </section>
+        <section className={styles.chat}>
+          <textarea className={styles.chat_text}></textarea>
+          <form className={styles.chat_form}>
+            <textarea className={styles.chat_form_text}></textarea>
+            <button className={styles.chat_button}>SENT</button>
+          </form>
         </section>
       </main>
     </div>
