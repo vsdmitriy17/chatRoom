@@ -13,8 +13,8 @@ function App() {
     <div className={styles.container}>
       <Header />
       <Routes>
-        <Route path="/" element={<ChatRoom />} />
         <Route path="/room/:id" element={<VideoCallRoom />} />
+        <Route path="/" element={<ChatRoom />} />
       </Routes>
     </div>
   );
