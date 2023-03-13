@@ -12,14 +12,17 @@ import styles from './VideoCallRoom.module.css';
 
 export const VideoCallRoom: React.FunctionComponent = () => {
   const { id } = useParams();
-  const { webSocket } = useContext(RoomContext);
+  const { webSocket, me, stream } = useContext(RoomContext);
 
   useEffect(() => {
-    webSocket.emit("join-room", { roomId: id });
-  }, [id,webSocket])
+    if (me) {
+      webSocket.emit("join-room", { roomId: id, peerId: me._id });
+    }
+  }, [id, me, webSocket])
+
   return (
     <main className={styles.main}>
-      <Video />
+      <Video stream={stream}/>
       <Chat />
     </main>
   )
