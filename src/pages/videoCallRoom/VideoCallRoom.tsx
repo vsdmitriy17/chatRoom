@@ -7,12 +7,13 @@ import { useParams } from 'react-router-dom';
 
 import { Chat } from '../../components/chat/Chat';
 import { Video } from '../../components/video/Video';
+import { PeerState } from '../../context/peerReduser';
 import { RoomContext } from '../../context/RoomContext';
 import styles from './VideoCallRoom.module.css';
 
 export const VideoCallRoom: React.FunctionComponent = () => {
   const { id } = useParams();
-  const { webSocket, me, stream } = useContext(RoomContext);
+  const { webSocket, me, stream, peerState } = useContext(RoomContext);
 
   useEffect(() => {
     if (me) {
@@ -22,7 +23,12 @@ export const VideoCallRoom: React.FunctionComponent = () => {
 
   return (
     <main className={styles.main}>
-      <Video stream={stream}/>
+      <section className={styles.video}>
+        <Video stream={stream}/>
+        {Object.values(peerState as PeerState).map((peer) => {
+          return (<Video stream={peer.stream}/>);
+        })}
+      </section>
       <Chat />
     </main>
   )

@@ -15,8 +15,6 @@ export const Video: React.FunctionComponent<{stream: MediaStream}> = ({ stream }
   }, [stream]);
 
   return (
-    <section className={styles.video}>
-      <video ref={videoRef} autoPlay muted={true}/>
-    </section>
+      <video className={styles.video_item} ref={videoRef} autoPlay muted={true}/>
   )
 }

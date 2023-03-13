@@ -3,7 +3,7 @@ import {
   REMOVE_PEER,
 } from './peerActions';
 
-type PeerState = Record<string, {stream: MediaStream}>;
+export type PeerState = Record<string, {stream: MediaStream}>;
 type PeerAction = 
   | {
     type: typeof ADD_PEER, 

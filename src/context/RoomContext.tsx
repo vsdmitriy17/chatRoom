@@ -10,7 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 import { v4 as uuidV4 } from 'uuid';
 
-import { addPeerAction } from './peerActions';
+import {
+  addPeerAction,
+  removePeerAction,
+} from './peerActions';
 import { peerReduser } from './peerReduser';
 
 const HOST_BACKEND = "http://localhost:5000"; // хост сервера
@@ -34,6 +37,10 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
     console.log({participants});
   }
 
+  const removePeer = (peerId: string) => {
+    dispatch(removePeerAction(peerId));
+  }
+
   useEffect(() => {
     const meId = uuidV4(); // создаем айди юзера (переделать на айди из БД)
     const peer = new Peer(meId);
@@ -49,6 +56,7 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
 
     webSocket.on("room-created", enterRoom); // слушатель события "room-created" - (отлавливает ответ с бека на событие "room-created")
     webSocket.on("get-users", getUsers);
+    webSocket.on("user-disconnected", removePeer);
   }, []);
 
   useEffect(() => {
@@ -73,7 +81,7 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
     });
   }, [me, stream]);
 
-  console.log({ peerState });
+  console.log("peerState= ", peerState);
 
   return (
     <RoomContext.Provider value={{webSocket, me, stream, peerState}}>{children}</RoomContext.Provider>
