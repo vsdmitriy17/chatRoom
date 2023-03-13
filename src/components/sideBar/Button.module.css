@@ -1,0 +1,18 @@
+.button {
+  cursor: pointer;
+  padding-left:10px;
+  padding-right:10px;
+  padding-top:5px;
+  padding-bottom:5px;
+  background-color:#A35709;
+  color:#F0E3CA;
+  width: fit-content;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 22px;
+  transition: background-color 250ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.button:hover, .button:focus {
+  background-color:#FF8303;
+}

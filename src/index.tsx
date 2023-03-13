@@ -6,9 +6,9 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
+import { RoomProvider } from './context/RoomContext';
 import reportWebVitals from './reportWebVitals';
 
-// import { RoomProvider } from "./context/RoomContext";
 // import { Home } from "./pages/Home";
 // import { Room } from "./pages/Room";
 // import { UserProvider } from "./context/UserContext";
@@ -17,7 +17,9 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App/>
+      <RoomProvider>
+        <App/>
+      </RoomProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
