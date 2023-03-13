@@ -1,6 +1,7 @@
 import {
   createContext,
   useEffect,
+  useReducer,
   useState,
 } from 'react';
 
@@ -8,6 +9,9 @@ import Peer from 'peerjs';
 import { useNavigate } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 import { v4 as uuidV4 } from 'uuid';
+
+import { addPeerAction } from './peerActions';
+import { peerReduser } from './peerReduser';
 
 const HOST_BACKEND = "http://localhost:5000"; // хост сервера
 
@@ -18,7 +22,8 @@ const webSocket = socketIOClient(HOST_BACKEND); // Конектимся к на�
 export const RoomProvider: React.FunctionComponent = ({children}) => {
   const navigate = useNavigate();
   const [me, setMe] = useState<Peer>(); //локальный стейт для хранения айди юзера (переделать на айди из БД)
-  const [stream, setStream] = useState<MediaStream>();
+  const [stream, setStream] = useState<MediaStream>(); // локальный стейт для хранения стрима
+  const [peerState, dispatch] = useReducer(peerReduser, {});
 
   const enterRoom = ({roomId}: {roomId: string}) => {
     console.log({roomId});
@@ -36,7 +41,7 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
 
     try {
       navigator.mediaDevices.getUserMedia({video: true, audio: true}).then((stream) => { // обращаемся к медиаУстройствам через встроенные библ браузера
-        setStream(stream);
+        setStream(stream); //записываем стрим в стейт
       });
     } catch (error) {
       console.error(error);
@@ -46,6 +51,31 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
     webSocket.on("get-users", getUsers);
   }, []);
 
-  return (<RoomContext.Provider value={{webSocket, me, stream}}>{children}</RoomContext.Provider>
+  useEffect(() => {
+    if (!me || !stream) {
+      return;
+    } else {
+      webSocket.on("user-joined", ({peerId}) => { // инициализация звонка
+        const call = me.call(peerId, stream);
+
+        call.on("stream", (peerStream) => {
+          dispatch(addPeerAction(peerId, peerStream));
+        });
+      });
+    };
+
+    me.on("call", (call) => { // ответ на звонок
+      call.answer(stream);
+
+      call.on("stream", (peerStream) => {
+        dispatch(addPeerAction(call.peer, peerStream));
+      });
+    });
+  }, [me, stream]);
+
+  console.log({ peerState });
+
+  return (
+    <RoomContext.Provider value={{webSocket, me, stream, peerState}}>{children}</RoomContext.Provider>
   );
 }
