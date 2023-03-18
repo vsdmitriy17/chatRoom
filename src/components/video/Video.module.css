@@ -1,8 +1,5 @@
 .video_item {
   width: 100%;
   border-radius: 20px;
-  flex-basis: calc(100% / 3 - 10px);
   overflow: hidden;
-  margin-right: 10px;
-  margin-bottom: 10px;
 }

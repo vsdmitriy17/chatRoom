@@ -1,6 +1,6 @@
 .header {
   position: fixed;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   z-index: 2;
   width: 100%;
@@ -11,6 +11,12 @@
   display: flex;
   background-color:#1B1A17;
   padding: 10px;
+}
+
+.header_title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .logo {
@@ -31,4 +37,11 @@
 
 .title_board {
   color:#A35709;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 40px;
 }

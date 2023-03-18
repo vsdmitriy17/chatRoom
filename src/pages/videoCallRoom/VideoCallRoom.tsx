@@ -6,6 +6,7 @@ import React, {
 import { useParams } from 'react-router-dom';
 
 import { Chat } from '../../components/chat/Chat';
+import { ToolBar } from '../../components/toolBar/ToolBar';
 import { Video } from '../../components/video/Video';
 import { PeerState } from '../../context/peerReduser';
 import { RoomContext } from '../../context/RoomContext';
@@ -23,13 +24,18 @@ export const VideoCallRoom: React.FunctionComponent = () => {
 
   return (
     <main className={styles.main}>
-      <section className={styles.video}>
-        <Video stream={stream}/>
-        {Object.values(peerState as PeerState).map((peer) => {
-          return (<Video stream={peer.stream}/>);
-        })}
-      </section>
-      <Chat />
+      <div className={styles.call}>
+        <section className={styles.video}>
+          <Video stream={stream}/>
+          {Object.values(peerState as PeerState).map((peer) => {
+            return (<Video stream={peer.stream}/>);
+          })}
+        </section>
+        <section className={styles.chatBar}>
+          <Chat />
+        </section>
+      </div>
+      <ToolBar />
     </main>
   )
 }

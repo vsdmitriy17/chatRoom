@@ -41,6 +41,12 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
     dispatch(removePeerAction(peerId));
   }
 
+  const shareScreen:()=> void = () => { // выбирает вкладку для шары
+    navigator.mediaDevices.getDisplayMedia({}).then(stream => {
+      setStream(stream);
+    });
+  }
+
   useEffect(() => {
     const meId = uuidV4(); // создаем айди юзера (переделать на айди из БД)
     const peer = new Peer(meId);
@@ -84,6 +90,6 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
   console.log("peerState= ", peerState);
 
   return (
-    <RoomContext.Provider value={{webSocket, me, stream, peerState}}>{children}</RoomContext.Provider>
+    <RoomContext.Provider value={{webSocket, me, stream, peerState, shareScreen}}>{children}</RoomContext.Provider>
   );
 }

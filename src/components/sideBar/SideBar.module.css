@@ -6,6 +6,6 @@
   flex-direction: column;
   justify-content: flex-start;
   width: 300px;
-  min-height: 100%;
+  min-height:40vmax;
   padding: 20px;
 }
