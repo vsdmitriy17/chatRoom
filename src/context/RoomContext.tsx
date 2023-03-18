@@ -5,7 +5,7 @@ import {
   useState,
 } from 'react';
 
-import Peer from 'peerjs';
+import Peer, { MediaConnection } from 'peerjs';
 import { useNavigate } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 import { v4 as uuidV4 } from 'uuid';
@@ -47,14 +47,15 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
     setStream(stream);
     if (!screenId) {
       setScreenId(me?.id || "");
-      // console.log("me=", me);
+      console.log("me=", me);
       console.log("peersState=", peerState);
       console.log("peersKeys=", Object.keys(peerState));
     } else {
       setScreenId("");
     }
 
-    Object.keys(peerState).forEach((connection:any) => {
+    const connections = me?.connections as Map<string, MediaConnection[]>; // меняем тип устаревшего свойства
+    Object.values(connections).forEach((connection:any) => { // заменяем видеотрек у др юзеров на новый (для нашего окна)
       const videoTrack = stream?.getTracks().find(track => track.kind === 'video');
       connection[0].peerConnection.getSenders()[1].replaceTrack(videoTrack).catch((err: any) => console.error(err));
     })
