@@ -47,15 +47,16 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
     if (!screenId) {
       setScreenId(me?.id || "");
       // console.log("me=", me);
-      // console.log("peerState=", peerState);
+      console.log("peersState=", peerState);
+      console.log("peersKeys=", Object.keys(peerState));
     } else {
       setScreenId("");
     }
 
-    Object.keys(peerState).forEach((connection:any) => {
-      const videoTrack = stream?.getTracks().find(track => track.kind === 'video');
-      connection[0].peerConnection.getSenders()[1].replaceTrack(videoTrack).catch((err: any) => console.error(err));
-    })
+    // Object.keys(peerState).forEach((connection:any) => {
+    //   const videoTrack = stream?.getTracks().find(track => track.kind === 'video');
+    //   connection[0].peerConnection.getSenders()[1].replaceTrack(videoTrack).catch((err: any) => console.error(err));
+    // })
   }
 
   const shareScreen:()=> void = () => { // выбирает вкладку для шары
