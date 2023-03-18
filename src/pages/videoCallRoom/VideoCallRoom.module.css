@@ -29,6 +29,13 @@
   row-gap: 10px;
 }
 
+.video_name {
+  color:#F0E3CA;
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
 .chatBar {
   height:100%;
 }

@@ -26,6 +26,7 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
   const navigate = useNavigate();
   const [me, setMe] = useState<Peer>(); //локальный стейт для хранения айди юзера (переделать на айди из БД)
   const [stream, setStream] = useState<MediaStream>(); // локальный стейт для хранения стрима
+  const [screenId, setScreenId] = useState<string>("");
   const [peerState, dispatch] = useReducer(peerReduser, {});
 
   const enterRoom = ({roomId}: {roomId: string}) => {
@@ -41,10 +42,28 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
     dispatch(removePeerAction(peerId));
   }
 
+  const switchStream = (stream: MediaStream) => {
+    setStream(stream);
+    if (!screenId) {
+      setScreenId(me?.id || "");
+      // console.log("me=", me);
+      // console.log("peerState=", peerState);
+    } else {
+      setScreenId("");
+    }
+
+    Object.keys(peerState).forEach((connection:any) => {
+      const videoTrack = stream?.getTracks().find(track => track.kind === 'video');
+      connection[0].peerConnection.getSenders()[1].replaceTrack(videoTrack).catch((err: any) => console.error(err));
+    })
+  }
+
   const shareScreen:()=> void = () => { // выбирает вкладку для шары
-    navigator.mediaDevices.getDisplayMedia({}).then(stream => {
-      setStream(stream);
-    });
+    if (screenId) {
+      navigator.mediaDevices.getUserMedia({video: true, audio: true}).then(switchStream);
+    } else {
+      navigator.mediaDevices.getDisplayMedia({}).then(switchStream); // выбирает вкладку для шары
+    }
   }
 
   useEffect(() => {

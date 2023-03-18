@@ -28,7 +28,12 @@ export const VideoCallRoom: React.FunctionComponent = () => {
         <section className={styles.video}>
           <Video stream={stream}/>
           {Object.values(peerState as PeerState).map((peer) => {
-            return (<Video stream={peer.stream}/>);
+            return (
+              <div>
+                <h2 className={styles.video_name}>{me.id}</h2>
+                <Video key={me.id} stream={peer.stream}/>
+              </div>
+            );
           })}
         </section>
         <section className={styles.chatBar}>
