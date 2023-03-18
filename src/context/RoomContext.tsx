@@ -27,10 +27,11 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
   const [me, setMe] = useState<Peer>(); //локальный стейт для хранения айди юзера (переделать на айди из БД)
   const [stream, setStream] = useState<MediaStream>(); // локальный стейт для хранения стрима
   const [screenId, setScreenId] = useState<string>("");
+  const [chatShow, setChatShow] = useState<boolean>(false);
   const [peerState, dispatch] = useReducer(peerReduser, {});
 
   const enterRoom = ({roomId}: {roomId: string}) => {
-    console.log({roomId});
+    // console.log({roomId});
     navigate(`/room/${roomId}`);
   };
 
@@ -53,10 +54,10 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
       setScreenId("");
     }
 
-    // Object.keys(peerState).forEach((connection:any) => {
-    //   const videoTrack = stream?.getTracks().find(track => track.kind === 'video');
-    //   connection[0].peerConnection.getSenders()[1].replaceTrack(videoTrack).catch((err: any) => console.error(err));
-    // })
+    Object.keys(peerState).forEach((connection:any) => {
+      const videoTrack = stream?.getTracks().find(track => track.kind === 'video');
+      connection[0].peerConnection.getSenders()[1].replaceTrack(videoTrack).catch((err: any) => console.error(err));
+    })
   }
 
   const shareScreen:()=> void = () => { // выбирает вкладку для шары
@@ -64,6 +65,14 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
       navigator.mediaDevices.getUserMedia({video: true, audio: true}).then(switchStream);
     } else {
       navigator.mediaDevices.getDisplayMedia({}).then(switchStream); // выбирает вкладку для шары
+    }
+  }
+
+  const toggleChat:()=> void = () => {
+    if (chatShow) {
+      setChatShow(false);
+    } else {
+      setChatShow(true);
     }
   }
 
@@ -107,9 +116,7 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
     });
   }, [me, stream]);
 
-  console.log("peerState= ", peerState);
-
   return (
-    <RoomContext.Provider value={{webSocket, me, stream, peerState, shareScreen}}>{children}</RoomContext.Provider>
+    <RoomContext.Provider value={{webSocket, me, stream, peerState, shareScreen, chatShow, toggleChat}}>{children}</RoomContext.Provider>
   );
 }

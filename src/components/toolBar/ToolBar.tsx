@@ -7,7 +7,7 @@ import ButtonUtils from '../utils/ButtonUtils';
 import styles from './ToolBar.module.css';
 
 export const ToolBar = () => {
-  const { shareScreen } = useContext(RoomContext);
+  const { shareScreen, toggleChat } = useContext(RoomContext);
 
   return (
     <section className={styles.toolBar}>
@@ -18,7 +18,7 @@ export const ToolBar = () => {
       </div>
       <div className={styles.toolBar_tools}>
         <ButtonUtils text="SCREEN SHARING" handleClick={shareScreen}/>
-        <ButtonUtils text="CHAT" />
+        <ButtonUtils text="CHAT" handleClick={toggleChat}/>
       </div>
     </section>
   )

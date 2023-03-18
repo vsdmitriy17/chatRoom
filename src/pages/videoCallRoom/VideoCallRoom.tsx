@@ -14,7 +14,7 @@ import styles from './VideoCallRoom.module.css';
 
 export const VideoCallRoom: React.FunctionComponent = () => {
   const { id } = useParams();
-  const { webSocket, me, stream, peerState } = useContext(RoomContext);
+  const { webSocket, me, stream, peerState, chatShow } = useContext(RoomContext);
 
   useEffect(() => {
     if (me) {
@@ -30,14 +30,16 @@ export const VideoCallRoom: React.FunctionComponent = () => {
           {Object.values(peerState as PeerState).map((peer) => {
             return (
               <div>
-                <h2 className={styles.video_name}>{me.id}</h2>
-                <Video key={me.id} stream={peer.stream}/>
+                <h2 className={styles.video_name}>{id}</h2>
+                <Video stream={peer.stream}/>
               </div>
             );
           })}
         </section>
         <section className={styles.chatBar}>
-          <Chat />
+          {chatShow && (
+            <Chat />
+          )}
         </section>
       </div>
       <ToolBar />
