@@ -29,6 +29,7 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
   const [screenId, setScreenId] = useState<string>("");
   const [chatShow, setChatShow] = useState<boolean>(false);
   const [peerState, dispatch] = useReducer(peerReduser, {});
+  const [roomId, setRoomId] = useState<string>("");
 
   const enterRoom = ({roomId}: {roomId: string}) => {
     // console.log({roomId});
@@ -47,9 +48,9 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
     setStream(stream);
     if (!screenId) {
       setScreenId(me?.id || "");
-      console.log("me=", me);
-      console.log("peersState=", peerState);
-      console.log("peersKeys=", Object.keys(peerState));
+      // console.log("me=", me);
+      // console.log("peersState=", peerState);
+      // console.log("peersKeys=", Object.keys(peerState));
     } else {
       setScreenId("");
     }
@@ -93,7 +94,30 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
     webSocket.on("room-created", enterRoom); // слушатель события "room-created" - (отлавливает ответ с бека на событие "room-created")
     webSocket.on("get-users", getUsers);
     webSocket.on("user-disconnected", removePeer);
+    webSocket.on("user-started-sharing", (peerId: string) => {
+      setScreenId(peerId);
+    });
+    webSocket.on("user-stop-sharing", () => {
+      setScreenId("");
+    });
+
+    return () => {
+      webSocket.off("room-created"); // снимаем слушателя события "room-created"
+      webSocket.off("get-users");
+      webSocket.off("user-disconnected");
+      webSocket.off("user-started-sharing");
+      webSocket.off("user-stop-sharing");
+    }
   }, []);
+
+  useEffect(() => {
+    if (screenId) {
+      webSocket.emit("start-sharing", {peerId: screenId, roomId});
+    } else {
+      webSocket.emit("stop-sharing", {roomId});
+    }
+
+  }, [screenId, roomId])
 
   useEffect(() => {
     if (!me || !stream) {
@@ -118,6 +142,6 @@ export const RoomProvider: React.FunctionComponent = ({children}) => {
   }, [me, stream]);
 
   return (
-    <RoomContext.Provider value={{webSocket, me, stream, peerState, shareScreen, chatShow, toggleChat}}>{children}</RoomContext.Provider>
+    <RoomContext.Provider value={{webSocket, me, stream, peerState, shareScreen, screenId, chatShow, toggleChat, setRoomId}}>{children}</RoomContext.Provider>
   );
 }

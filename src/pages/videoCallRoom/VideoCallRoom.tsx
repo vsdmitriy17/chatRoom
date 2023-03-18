@@ -14,7 +14,7 @@ import styles from './VideoCallRoom.module.css';
 
 export const VideoCallRoom: React.FunctionComponent = () => {
   const { id } = useParams();
-  const { webSocket, me, stream, peerState, chatShow } = useContext(RoomContext);
+  const { webSocket, me, stream, peerState, chatShow, setRoomId, screenId } = useContext(RoomContext);
 
   useEffect(() => {
     if (me) {
@@ -22,20 +22,41 @@ export const VideoCallRoom: React.FunctionComponent = () => {
     }
   }, [id, me, webSocket])
 
+  useEffect(() => {
+    setRoomId(id);
+  }, [id, setRoomId])
+
+  const screnSharingVidio = screenId === me?.id ? stream : peerState[screenId]?.stream;
+
   return (
     <main className={styles.main}>
       <div className={styles.call}>
-        <section className={styles.video}>
-          <Video stream={stream}/>
-          {Object.values(peerState as PeerState).map((peer) => {
-            return (
-              <div>
-                <h2 className={styles.video_name}>{id}</h2>
-                <Video stream={peer.stream}/>
-              </div>
-            );
-          })}
-        </section>
+        {screnSharingVidio ? (
+          <section className={styles.video_share}>
+            <div>
+              <h2 className={styles.video_name}>My NickName</h2>
+              <Video stream={screnSharingVidio}/>
+            </div>
+            <div>
+              <Video stream={stream}/>
+            </div>
+          </section>
+        ) : (
+          <section className={styles.video}>
+            <div>
+              <h2 className={styles.video_name}>My NickName</h2>
+              <Video stream={stream}/>
+            </div>
+            {Object.values(peerState as PeerState).map((peer) => {
+              return (
+                <div>
+                  <h2 className={styles.video_name}>Friends NickName</h2>
+                  <Video stream={peer.stream}/>
+                </div>
+              );
+            })}
+          </section>
+        )}
         <section className={styles.chatBar}>
           {chatShow && (
             <Chat />
